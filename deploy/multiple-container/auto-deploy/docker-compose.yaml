@@ -147,6 +147,23 @@ services:
         timeout: 10s
         retries: 5
 
+  bi-ai:
+    container_name: bi_ai_container
+    image: us-docker.pkg.dev/boldbi-294612/boldbi/bold-ai:9.1.73
+    restart: on-failure
+    volumes:
+      - boldservices_data:/application/app_data
+    networks:
+      - boldservices
+    depends_on:
+      - id-web
+      - bi-web
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost/health-check"]
+        interval: 10s
+        timeout: 10s
+        retries: 5
+
   reverse-proxy:
     container_name: nginx
     image: nginx
